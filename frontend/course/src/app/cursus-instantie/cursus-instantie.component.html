@@ -1,0 +1,28 @@
+<mat-card>
+    <mat-card-header>Weekoverzicht</mat-card-header>
+    <br>
+    <mat-card-content>
+        <table mat-table [dataSource]="cursusInstantieCollection" class="mat-elevation-z8">
+
+            <ng-container matColumnDef="start">
+              <th mat-header-cell *matHeaderCellDef> Start </th>
+              <td mat-cell *matCellDef="let element"> {{element.startDatum | date: 'd/M/yyyy' }} </td>
+            </ng-container>
+        
+            <ng-container matColumnDef="duur">
+              <th mat-header-cell *matHeaderCellDef> Duur </th>
+              <td mat-cell *matCellDef="let element"> {{element.cursus.duur}} dagen </td>
+            </ng-container>
+          
+            <ng-container matColumnDef="titel">
+              <th mat-header-cell *matHeaderCellDef> Titel </th>
+              <td mat-cell *matCellDef="let element"> {{element.cursus.titel}} </td>
+            </ng-container>
+          
+            <tr mat-header-row *matHeaderRowDef="cursusInstantieColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: cursusInstantieColumns;"></tr>
+        
+          </table>
+    </mat-card-content>
+</mat-card>  
+  
