@@ -10,25 +10,32 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Course.Data;
+using Course.Data.Interface;
+using Course.Data.Repository;
 using Course.Models;
 
 namespace Course.Controllers
 {
     public class CursusController : ApiController
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private ICursusRepository _cursusRepository;
+
+        public CursusController(ICursusRepository cursusRepository)
+        {
+            _cursusRepository = cursusRepository;
+        }
 
         // GET: api/Cursus
-        public IQueryable<Cursus> GetCursus()
+        public async Task<IEnumerable<Cursus>> GetCursus()
         {
-            return db.Cursus;
+            return await _cursusRepository.GetAllAsync();
         }
 
         // GET: api/Cursus/5
         [ResponseType(typeof(Cursus))]
         public async Task<IHttpActionResult> GetCursus(int id)
         {
-            Cursus cursus = await db.Cursus.FindAsync(id);
+            Cursus cursus = await _cursusRepository.GetByIdAsync(id);
             if (cursus == null)
             {
                 return NotFound();
@@ -51,15 +58,15 @@ namespace Course.Controllers
                 return BadRequest();
             }
 
-            db.Entry(cursus).State = EntityState.Modified;
+            _cursusRepository.Update(cursus);
 
             try
             {
-                await db.SaveChangesAsync();
+                await _cursusRepository.SaveAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CursusExists(id))
+                if (!await CursusExists(id))
                 {
                     return NotFound();
                 }
@@ -81,8 +88,8 @@ namespace Course.Controllers
                 return BadRequest(ModelState);
             }
 
-            db.Cursus.Add(cursus);
-            await db.SaveChangesAsync();
+            _cursusRepository.Add(cursus);
+            await _cursusRepository.SaveAsync();
 
             return CreatedAtRoute("DefaultApi", new { id = cursus.Id }, cursus);
         }
@@ -91,14 +98,14 @@ namespace Course.Controllers
         [ResponseType(typeof(Cursus))]
         public async Task<IHttpActionResult> DeleteCursus(int id)
         {
-            Cursus cursus = await db.Cursus.FindAsync(id);
+            Cursus cursus = await _cursusRepository.GetByIdAsync(id);
             if (cursus == null)
             {
                 return NotFound();
             }
 
-            db.Cursus.Remove(cursus);
-            await db.SaveChangesAsync();
+            _cursusRepository.Remove(cursus);
+            await _cursusRepository.SaveAsync();
 
             return Ok(cursus);
         }
@@ -107,14 +114,15 @@ namespace Course.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _cursusRepository.Dispose();
             }
             base.Dispose(disposing);
         }
 
-        private bool CursusExists(int id)
+        private async Task<bool> CursusExists(int id)
         {
-            return db.Cursus.Count(e => e.Id == id) > 0;
+            var cursus = await _cursusRepository.GetByIdAsync(id);
+            return (cursus != null);
         }
     }
 }

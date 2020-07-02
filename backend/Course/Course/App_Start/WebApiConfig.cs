@@ -1,10 +1,12 @@
 ﻿using Course.Data.Interface;
 using Course.Data.Repository;
 using Course.Models;
+using Course.Services;
 using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using Unity;
@@ -18,6 +20,8 @@ namespace Course
             // Web API configuration and services
             var container = new UnityContainer();
             container.RegisterType<ICursusRepository, CursusRepository>();
+            container.RegisterType<ICursusInstantieRepository, CursusInstantieRepository>();
+            container.RegisterType<ITextFileToObjectConverterService, TextFileToObjectConverterService>();
             config.DependencyResolver = new UnityResolver(container);
 
             // Web API routes
@@ -38,6 +42,7 @@ namespace Course
             jsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             config.Formatters.Remove(config.Formatters.XmlFormatter);
             jsonFormatter.SerializerSettings.DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Local;
+            config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("multipart/form-data"));
         }
     }
 }

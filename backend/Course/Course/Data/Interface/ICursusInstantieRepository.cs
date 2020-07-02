@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace Course.Data.Interface
 {
-    interface ICursusInstantieRepository
+    public interface ICursusInstantieRepository
     {
-        Task<CursusInstantie> GetById(int id);
+        Task<CursusInstantie> GetByIdAsync(int id);
 
-        Task<CursusInstantie> FirstOrDefault(Expression<Func<CursusInstantie, bool>> predicate);
+        Task<CursusInstantie> FirstOrDefaultAsync(Expression<Func<CursusInstantie, bool>> predicate);
 
         void Add(CursusInstantie entity);
 
@@ -22,8 +22,14 @@ namespace Course.Data.Interface
 
         Task<IEnumerable<CursusInstantie>> GetAllAsync();
 
-        Task<IEnumerable<CursusInstantie>> GetWhere(Expression<Func<CursusInstantie, bool>> predicate);
+        void AddRange(IEnumerable<CursusInstantie> entities);
+
+        Task<IEnumerable<CursusInstantie>> GetWhereAsync(Expression<Func<CursusInstantie, bool>> predicate);
 
         Task SaveAsync();
+
+        void Dispose();
+
+        void Dispose(bool disposing);
     }
 }

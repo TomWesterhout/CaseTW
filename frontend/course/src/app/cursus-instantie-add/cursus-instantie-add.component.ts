@@ -32,10 +32,7 @@ export class CursusInstantieAddComponent implements OnInit {
     formData.append('file', this.file, this.file.name);
 
     this.uploadFileService.upload(formData).subscribe(data => {
-       var response = data.toString().split('.');
-       this.succesResponse = response[0];
-       this.duplicateCursusResponse = response[1];
-       this.duplicateInstantieResponse = response[2];
+      console.log('success');
       }, error => {
         console.log(error);
     });

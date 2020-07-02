@@ -22,7 +22,12 @@ namespace Course.Models
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            Dispose(true);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            _container.Dispose();
         }
 
         public object GetService(Type serviceType)

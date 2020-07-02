@@ -20,7 +20,6 @@ namespace Course.Data
         }
 
         public DbSet<Cursus> Cursus { get; set; }
-
         public DbSet<CursusInstantie> CursusInstantie { get; set; }
     }
 }

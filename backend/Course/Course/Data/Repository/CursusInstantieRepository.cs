@@ -14,12 +14,12 @@ namespace Course.Data.Repository
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        public async Task<CursusInstantie> GetById(int id)
+        public async Task<CursusInstantie> GetByIdAsync(int id)
         {
             return await db.CursusInstantie.FindAsync(id);
         }
 
-        public async Task<CursusInstantie> FirstOrDefault(Expression<Func<CursusInstantie, bool>> predicate)
+        public async Task<CursusInstantie> FirstOrDefaultAsync(Expression<Func<CursusInstantie, bool>> predicate)
         {
             return await db.CursusInstantie.FirstOrDefaultAsync(predicate);
         }
@@ -44,7 +44,12 @@ namespace Course.Data.Repository
             return await db.CursusInstantie.ToListAsync();
         }
 
-        public async Task<IEnumerable<CursusInstantie>> GetWhere(Expression<Func<CursusInstantie, bool>> predicate)
+        public void AddRange(IEnumerable<CursusInstantie> entities)
+        {
+            db.CursusInstantie.AddRange(entities);
+        }
+
+        public async Task<IEnumerable<CursusInstantie>> GetWhereAsync(Expression<Func<CursusInstantie, bool>> predicate)
         {
             return await db.CursusInstantie.Where(predicate).ToListAsync();
         }
