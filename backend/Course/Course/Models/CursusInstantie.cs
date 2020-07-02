@@ -17,7 +17,6 @@ namespace Course.Models
         [Required]
         public int CursusId { get; set; }
 
-        [Required]
         public virtual Cursus Cursus { get; set; }
     }
 }

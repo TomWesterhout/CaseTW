@@ -12,7 +12,15 @@ namespace Course.Data.Repository
 {
     class CursusInstantieRepository : ICursusInstantieRepository, IDisposable
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private ApplicationDbContext db;
+
+        public CursusInstantieRepository()
+        {
+        }
+        public CursusInstantieRepository(ApplicationDbContext context)
+        {
+            db = context;
+        }
 
         public async Task<CursusInstantie> GetByIdAsync(int id)
         {

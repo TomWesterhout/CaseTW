@@ -9,6 +9,6 @@ namespace Course.Services
 {
     public interface ITextFileToObjectConverterService
     {
-        Task<string> ExtractObjectsFromTextFile(HttpPostedFile textFile);
+        Task<List<string>> ExtractObjectsFromTextFile(HttpPostedFile textFile);
     }
 }

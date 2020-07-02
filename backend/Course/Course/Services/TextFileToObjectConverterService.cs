@@ -1,4 +1,6 @@
-﻿using Course.Data.Interface;
+﻿using Course.Data;
+using Course.Data.Interface;
+using Course.Data.Repository;
 using Course.Data.StaticText;
 using Course.Models;
 using Course.Services.Interface;
@@ -20,15 +22,13 @@ namespace Course.Services
         private int cursusInstantieCount;
         private int duplicateCount;
 
-        public TextFileToObjectConverterService(
-            ICursusInstantieRepository cursusInstantieRepository, 
-            ICursusRepository cursusRepository)
+        public TextFileToObjectConverterService(ApplicationDbContext context)
         {
-            _cursusInstantieRepository = cursusInstantieRepository;
-            _cursusRepository = cursusRepository;
+            _cursusInstantieRepository = new CursusInstantieRepository(context);
+            _cursusRepository = new CursusRepository(context);
         }
 
-        public async Task<string> ExtractObjectsFromTextFile(HttpPostedFile textFile)
+        public async Task<List<string>> ExtractObjectsFromTextFile(HttpPostedFile textFile)
         {
             string unprocessedText;
             using (StreamReader streamReader = new StreamReader(textFile.InputStream))
@@ -48,8 +48,8 @@ namespace Course.Services
                 await _cursusRepository.SaveAsync();
 
                 List<CursusInstantie> cursusInstantieObjecten = await ExtractCursusInstantieObjectsFromProcessedText(processedText);
-                _cursusRepository.AddRange(cursusObjecten);
-                await _cursusRepository.SaveAsync();
+                _cursusInstantieRepository.AddRange(cursusInstantieObjecten);
+                await _cursusInstantieRepository.SaveAsync();
             }
             catch(Exception ex)
             {
@@ -72,11 +72,7 @@ namespace Course.Services
             {
                 Cursus cursusObject = InstantiateCursusObject(i, processedText);
 
-                if (await IsDuplicate(cursusObjecten, cursusObject))
-                {
-                    duplicateCount++;
-                }
-                else
+                if (!await IsDuplicate(cursusObjecten, cursusObject))
                 {
                     cursusObjecten.Add(cursusObject);
                     cursusCount++;
@@ -105,7 +101,7 @@ namespace Course.Services
         private async Task<bool> IsDuplicate(List<Cursus> cursusObjecten, Cursus cursusObject)
         {
             var databaseCursusObjects = await _cursusRepository.GetWhereAsync(c => c.Code == cursusObject.Code);
-            return !cursusObjecten.Any(co => co.Code == cursusObject.Code) && (databaseCursusObjects.Count() == 0);
+            return cursusObjecten.Any(co => co.Code == cursusObject.Code) || (databaseCursusObjects.Count() > 0);
         }
 
         private async Task<List<CursusInstantie>> ExtractCursusInstantieObjectsFromProcessedText(string[] processedText)
@@ -116,7 +112,11 @@ namespace Course.Services
             {
                 CursusInstantie cursusInstantieObject = await InstantiateCursusInstantieObject(i, processedText);
 
-                if (!await IsDuplicate(cursusInstantieObjecten, cursusInstantieObject))
+                if (await IsDuplicate(cursusInstantieObjecten, cursusInstantieObject))
+                {
+                    duplicateCount++;
+                }
+                else
                 {
                     cursusInstantieObjecten.Add(cursusInstantieObject);
                     cursusCount++;
@@ -132,21 +132,23 @@ namespace Course.Services
 
             return new CursusInstantie
             {
-                Cursus = cursus,
-                StartDatum = _textFileToAttributeConverterService.ExtractStartdatum(index)
+                StartDatum = _textFileToAttributeConverterService.ExtractStartdatum(index),
+                CursusId = cursus.Id,
+                Cursus = cursus
             };
         }
 
         private async Task<bool> IsDuplicate(List<CursusInstantie> cursusInstantieObjecten, CursusInstantie cursusInstantieObject)
         {
-            var databaseCursusInstantieObjects = await _cursusInstantieRepository.GetWhereAsync(c => c.Cursus.Code == cursusInstantieObject.Cursus.Code);
-            return !cursusInstantieObjecten.Any(cio => cio.Cursus.Code == cursusInstantieObject.Cursus.Code) && (databaseCursusInstantieObjects.Count() == 0);
+            var databaseCursusInstantieObjects = await _cursusInstantieRepository.GetWhereAsync(ci => ci.StartDatum == cursusInstantieObject.StartDatum && ci.Cursus.Code == cursusInstantieObject.Cursus.Code);
+            return cursusInstantieObjecten.Any(cio => cio.StartDatum == cursusInstantieObject.StartDatum && cio.Cursus.Code == cursusInstantieObject.Cursus.Code) || (databaseCursusInstantieObjects.Count() > 0);
         }
 
-        public string CreateResponseMessages()
+        public List<string> CreateResponseMessages()
         {
-            string responseMessage = string.Format(TextFileConverterResponseText.baseText, cursusCount, cursusInstantieCount);
-            responseMessage += duplicateCount > 0 ? string.Format(TextFileConverterResponseText.duplicateText, duplicateCount) : "";
+            List<string> responseMessage = new List<string>();
+            responseMessage.Add(string.Format(TextFileConverterResponseText.baseText, cursusCount, cursusInstantieCount));
+            responseMessage.Add(duplicateCount > 0 ? string.Format(TextFileConverterResponseText.duplicateText, duplicateCount) : "");
 
             return responseMessage;
         }

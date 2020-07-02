@@ -62,8 +62,7 @@ namespace Course.Services
             try
             {
                 string startOfValue = _processedText[i + 3].Substring(12);
-                string dateMatch = Regex.Match(startOfValue, @"\d{2}\/\d{2}\/\d{4}").Value;
-                return DateTime.ParseExact(dateMatch, "MM/dd/yyyy", CultureInfo.CurrentCulture);
+                return DateTime.Parse(startOfValue);
             }
             catch (Exception ex)
             {

@@ -10,7 +10,10 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
+using System.Web.Http.Results;
+using Course.Data;
 using Course.Data.Interface;
+using Course.Data.Repository;
 using Course.Models;
 using Course.Services;
 using Newtonsoft.Json;
@@ -20,13 +23,15 @@ namespace Course.Controllers
     [RoutePrefix("Api/CursusInstantie")]
     public class CursusInstantieController : ApiController
     {
+        private ApplicationDbContext _context;
         private ICursusInstantieRepository _cursusInstantieRepository;
         private ITextFileToObjectConverterService _textFileToObjectConverterService;
 
-        public CursusInstantieController(ICursusInstantieRepository cursusInstantieRepository, ITextFileToObjectConverterService textFileToObjectConverterService)
+        public CursusInstantieController(ApplicationDbContext context)
         {
-            _cursusInstantieRepository = cursusInstantieRepository;
-            _textFileToObjectConverterService = textFileToObjectConverterService;
+            _context = context;
+            _cursusInstantieRepository = new CursusInstantieRepository(context);
+            _textFileToObjectConverterService = new TextFileToObjectConverterService(context);
         }
 
         [Route("Index")]
@@ -50,7 +55,7 @@ namespace Course.Controllers
 
             HttpPostedFile textFile = httpRequest.Files[0];
 
-            string extractionResult = await _textFileToObjectConverterService.ExtractObjectsFromTextFile(textFile);
+            List<string> extractionResult = await _textFileToObjectConverterService.ExtractObjectsFromTextFile(textFile);
 
             return Request.CreateResponse(HttpStatusCode.Created, extractionResult);
         }
