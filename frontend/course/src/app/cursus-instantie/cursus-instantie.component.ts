@@ -25,15 +25,48 @@ export class CursusInstantieComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       let cursusWeek = +params.get('cursusweek');
       let cursusYear = +params.get('cursusyear');
+
+      if (cursusWeek === 0 || cursusYear === 0) {
+        this.cursusWeek = this.getCurrentWeekNumber();
+        this.cursusYear = this.getCurrentYear();
+      }
+
       if (cursusWeek !== null && cursusWeek > 0) {
         this.cursusWeek = cursusWeek;
       }
+
       if (this.cursusYear !== null && this.cursusYear > 0) {
         this.cursusYear = cursusYear;
       }
+
       this.getCursusInstanties();
+      console.log(this.getCurrentWeekNumber());
     });
   }
+
+  getCurrentWeekNumber(): number {
+    let date = new Date("2020-07-06");
+    let dayNum = date.getUTCDay() || 7;
+
+    date.setUTCDate(date.getUTCDate() + 4 - dayNum);
+
+    let yearStart = new Date(Date.UTC(date.getUTCFullYear(),0,1));
+
+    return Math.ceil((((date.getTime() - yearStart.getTime()) / 86400000) + 1)/7);
+  };
+
+  getCurrentYear(): number {
+    return new Date().getFullYear();
+  }
+
+  getWeeksInYear(year) {
+    let day = new Date(year, 0, 1);
+    let isLeapYear = new Date(year, 1, 29).getMonth() === 1;
+
+    // 53 weeks: In case January 1st falls on a Thursday or if the year is a leapyear and January 1st falls on a wednesday then. 
+    // 52 weeks: all other scenarios.
+    return day.getDay() === 4 || isLeapYear && day.getDay() === 3 ? 53 : 52
+}
 
   getCursusInstanties() {
     this.cursusInstantieService.getByWeekAndYear(this.cursusWeek, this.cursusYear).subscribe(cursusInstantieData => {
@@ -42,13 +75,30 @@ export class CursusInstantieComponent implements OnInit {
   }
 
   increaseCursusWeek() {
-    this.cursusWeek = this.cursusWeek++ > 53 ? this.cursusWeek : this.cursusWeek++;
+    let weeksInCurrentYear = this.getWeeksInYear(this.cursusYear);
+    if (this.cursusWeek + 1 > weeksInCurrentYear) {
+      this.cursusWeek = 1;
+      this.cursusYear++
+    }
+    else{
+      this.cursusWeek++;
+    }
+
     this.getCursusInstanties();
     this.router.navigate(['/cursusinstantie-overzicht', this.cursusWeek, this.cursusYear]);
   }
 
   decreaseCursusWeek() {
-    this.cursusWeek = this.cursusWeek-- <= 0 ? this.cursusWeek : this.cursusWeek--;
+    let weeksInPreviousYear = this.getWeeksInYear(this.cursusYear - 1);
+    if (this.cursusWeek - 1 < 1) {
+      this.cursusWeek = weeksInPreviousYear;
+      this.cursusYear--;
+    }
+    else{
+      this.cursusWeek--;
+    }
+
     this.getCursusInstanties();
+    this.router.navigate(['/cursusinstantie-overzicht', this.cursusWeek, this.cursusYear]);
   }
 }

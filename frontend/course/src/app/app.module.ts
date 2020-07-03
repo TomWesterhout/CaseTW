@@ -29,13 +29,12 @@ const examinationDateUrl: string = `cursusinstantie-overzicht/${cursusWeek}/${cu
 const appRoutes: Routes = [
   { 
     path: '', 
-    redirectTo: `/${examinationDateUrl}`, 
+    redirectTo: '/cursusinstantie-overzicht', 
     pathMatch: 'full' 
   },
   { 
     path: 'cursusinstantie-overzicht', 
-    redirectTo: `/${examinationDateUrl}`, 
-    pathMatch: 'full' 
+    component: CursusInstantieComponent 
   },
   {
     path: 'cursusinstantie-overzicht/:cursusweek/:cursusyear',

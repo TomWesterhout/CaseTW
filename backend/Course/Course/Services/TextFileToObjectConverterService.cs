@@ -128,7 +128,7 @@ namespace Course.Services
                 else
                 {
                     cursusInstantieObjecten.Add(cursusInstantieObject);
-                    cursusCount++;
+                    cursusInstantieCount++;
                 }
             }
             return cursusInstantieObjecten;

@@ -192,3 +192,9 @@ C:\Users\Tom\Documents\Development\CaseTW\CaseTW\backend\Course\Course\obj\Debug
 C:\Users\Tom\Documents\Development\CaseTW\CaseTW\backend\Course\Course\obj\Debug\Course.csproj.CopyComplete
 C:\Users\Tom\Documents\Development\CaseTW\CaseTW\backend\Course\Course\obj\Debug\Course.dll
 C:\Users\Tom\Documents\Development\CaseTW\CaseTW\backend\Course\Course\obj\Debug\Course.pdb
+C:\Users\Tom\Documents\Development\CaseTW\CaseTW\backend\Course\Course\bin\Castle.Core.dll
+C:\Users\Tom\Documents\Development\CaseTW\CaseTW\backend\Course\Course\bin\Moq.dll
+C:\Users\Tom\Documents\Development\CaseTW\CaseTW\backend\Course\Course\bin\System.Threading.Tasks.Extensions.dll
+C:\Users\Tom\Documents\Development\CaseTW\CaseTW\backend\Course\Course\bin\Castle.Core.xml
+C:\Users\Tom\Documents\Development\CaseTW\CaseTW\backend\Course\Course\bin\Moq.xml
+C:\Users\Tom\Documents\Development\CaseTW\CaseTW\backend\Course\Course\bin\System.Threading.Tasks.Extensions.xml
