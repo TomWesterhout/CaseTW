@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef } from '@angular/core';
 import { UploadFileService } from '../shared/api/upload-file.service';
+import { ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-cursus-instantie-add',
@@ -8,13 +9,15 @@ import { UploadFileService } from '../shared/api/upload-file.service';
 })
 export class CursusInstantieAddComponent implements OnInit {
   file: File = null;
-  info: String = '';
+  info: String;
   successResponse: String;
   duplicateResponse: String;
 
   constructor(private uploadFileService: UploadFileService) { }
 
   ngOnInit(): void { }
+
+  @ViewChild('fileInput') fileInput: ElementRef;
 
   onFileChange(event) {
     if (event.target.files.length > 0) {
@@ -54,6 +57,13 @@ export class CursusInstantieAddComponent implements OnInit {
       }, error => {
         console.log(error);
     });
+
+    this.clearFile();
+  }
+
+  clearFile() {
+    this.fileInput.nativeElement.value = null;
+    this.file = null;
   }
 }
 

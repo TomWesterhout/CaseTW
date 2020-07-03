@@ -4,7 +4,7 @@
   <mat-card-content>  
     <div class="form">
       <label for="file">Bestand: </label>
-      <input type="file" id="text-file" (change)="onFileChange($event)">
+      <input #fileInput type="file" id="text-file" (change)="onFileChange($event)">
     </div>
     <br>
     <button mat-raised-button color="primary" (click)="uploadFile()">Invoeren</button>
