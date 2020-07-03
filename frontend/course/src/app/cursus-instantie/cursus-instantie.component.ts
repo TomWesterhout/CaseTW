@@ -35,7 +35,7 @@ export class CursusInstantieComponent implements OnInit {
         this.cursusWeek = cursusWeek;
       }
 
-      if (this.cursusYear !== null && this.cursusYear > 0) {
+      if (cursusYear !== null && cursusYear > 0) {
         this.cursusYear = cursusYear;
       }
 
@@ -57,7 +57,9 @@ export class CursusInstantieComponent implements OnInit {
   };
 
   getCurrentYear(): number {
-    return new Date().getFullYear();
+    let date = new Date().getFullYear();
+    console.log(date);
+    return date;
   }
 
   getWeeksInYear(year) {

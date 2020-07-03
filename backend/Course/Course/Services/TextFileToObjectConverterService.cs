@@ -23,10 +23,16 @@ namespace Course.Services
         private int cursusInstantieCount;
         private int duplicateCount;
 
-        public TextFileToObjectConverterService(ApplicationDbContext context)
+        public TextFileToObjectConverterService(
+            ICursusInstantieRepository cursusInstantieRepository,
+            ICursusRepository cursusRepository,
+            ITextFileToAttributeConverterService textFileToAttributeConverterService,
+            ITextFileValidationService textFileValidationService)
         {
-            _cursusInstantieRepository = new CursusInstantieRepository(context);
-            _cursusRepository = new CursusRepository(context);
+            _cursusInstantieRepository = cursusInstantieRepository;
+            _cursusRepository = cursusRepository;
+            _textFileToAttributeConverterService = textFileToAttributeConverterService;
+            _textFileValidationService = textFileValidationService;
         }
 
         public async Task<List<string>> ExtractObjectsFromTextFile(HttpPostedFile textFile)
@@ -39,13 +45,13 @@ namespace Course.Services
 
             string[] processedText = ProcessText(unprocessedText);
 
-            _textFileValidationService = new TextFileValidationService();
+            //_textFileValidationService = new TextFileValidationService();
             var validationResponse = _textFileValidationService.ValidateTextFile(processedText);
             if (validationResponse[0] != "Valid")
             {
                 return validationResponse;
             }
-            _textFileToAttributeConverterService = new TextFileToAttributeConverterService(processedText);
+            //_textFileToAttributeConverterService = new TextFileToAttributeConverterService(processedText);
 
             ResetCounters();
 
@@ -101,9 +107,9 @@ namespace Course.Services
         {
             return new Cursus
             {
-                Titel = _textFileToAttributeConverterService.ConvertTitel(index),
-                Duur = _textFileToAttributeConverterService.ConvertDuur(index),
-                Code = _textFileToAttributeConverterService.ConvertCode(index)
+                Titel = _textFileToAttributeConverterService.ConvertTitel(index, processedText),
+                Duur = _textFileToAttributeConverterService.ConvertDuur(index, processedText),
+                Code = _textFileToAttributeConverterService.ConvertCode(index, processedText)
             };
         }
 
@@ -136,12 +142,12 @@ namespace Course.Services
 
         private async Task<CursusInstantie> InstantiateCursusInstantieObject(int index, string[] processedText)
         {
-            string cursusCode = _textFileToAttributeConverterService.ConvertCode(index);
+            string cursusCode = _textFileToAttributeConverterService.ConvertCode(index, processedText);
             Cursus cursus = await _cursusRepository.FirstOrDefaultAsync(ci => ci.Code == cursusCode);
 
             return new CursusInstantie
             {
-                StartDatum = _textFileToAttributeConverterService.ExtractStartdatum(index),
+                StartDatum = _textFileToAttributeConverterService.ExtractStartdatum(index, processedText),
                 CursusId = cursus.Id,
                 Cursus = cursus
             };

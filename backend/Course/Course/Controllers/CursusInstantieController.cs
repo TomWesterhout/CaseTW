@@ -23,15 +23,13 @@ namespace Course.Controllers
     [RoutePrefix("Api/CursusInstantie")]
     public class CursusInstantieController : ApiController
     {
-        private ApplicationDbContext _context;
         private ICursusInstantieRepository _cursusInstantieRepository;
         private ITextFileToObjectConverterService _textFileToObjectConverterService;
 
-        public CursusInstantieController(ApplicationDbContext context)
+        public CursusInstantieController(ICursusInstantieRepository cursusInstantieRepository, ITextFileToObjectConverterService textFileToObjectConverterService)
         {
-            _context = context;
-            _cursusInstantieRepository = new CursusInstantieRepository(context);
-            _textFileToObjectConverterService = new TextFileToObjectConverterService(context);
+            _cursusInstantieRepository = cursusInstantieRepository;
+            _textFileToObjectConverterService = textFileToObjectConverterService;
         }
 
         [Route("Index")]

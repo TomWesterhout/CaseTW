@@ -14,10 +14,6 @@ namespace Course.Data.Repository
     {
         private ApplicationDbContext db;
 
-        public CursusRepository()
-        {
-        }
-
         public CursusRepository(ApplicationDbContext context)
         {
             db = context;

@@ -213,7 +213,7 @@
     <Compile Include="Services\Interface\ITextFileToObjectConverterService.cs" />
     <Compile Include="Services\TextFileToObjectConverterService.cs" />
     <Compile Include="Services\TextFileValidationService.cs" />
-    <Compile Include="Services\TextToAttributeConverterService.cs" />
+    <Compile Include="Services\TextFileToAttributeConverterService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />

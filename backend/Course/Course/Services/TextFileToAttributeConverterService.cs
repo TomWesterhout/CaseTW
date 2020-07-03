@@ -17,9 +17,9 @@ namespace Course.Services
         {
             _processedText = processedText;
         }
-        public string ConvertTitel(int index)
+        public string ConvertTitel(int index, string[] processedText)
         {
-            Match match = Regex.Match(_processedText[index], @"[^:\s]*$");
+            Match match = Regex.Match(processedText[index], @"[^:\s]*$");
             if (match.Success)
             {
                 return match.Value;
@@ -27,9 +27,9 @@ namespace Course.Services
             return string.Empty;
         }
 
-        public string ConvertCode(int index)
+        public string ConvertCode(int index, string[] processedText)
         {
-            Match match = Regex.Match(_processedText[index + 1], @"[^:\s]*$");
+            Match match = Regex.Match(processedText[index + 1], @"[^:\s]*$");
             if (match.Success)
             {
                 return match.Value;
@@ -37,9 +37,9 @@ namespace Course.Services
             return string.Empty;
         }
 
-        public int ConvertDuur(int index)
+        public int ConvertDuur(int index, string[] processedText)
         {
-            Match match = Regex.Match(_processedText[index + 2], @"[Duur:\s]\d");
+            Match match = Regex.Match(processedText[index + 2], @"[Duur:\s]\d");
             if (match.Success)
             {
                 return Int32.Parse(match.Value);
@@ -48,9 +48,9 @@ namespace Course.Services
             return 0;
         }
 
-        public DateTime ExtractStartdatum(int index)
+        public DateTime ExtractStartdatum(int index, string[] processedText)
         {
-            Match match = Regex.Match(_processedText[index + 3], @"[Startdatum:\s]\d{1,2}\/\d{1,2}\/\d{4}$");
+            Match match = Regex.Match(processedText[index + 3], @"[Startdatum:\s]\d{1,2}\/\d{1,2}\/\d{4}$");
             if (match.Success)
             {
                 return DateTime.Parse(match.Value);

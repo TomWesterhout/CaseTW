@@ -8,10 +8,10 @@ namespace Course.Services.Interface
 {
     public interface ITextFileToAttributeConverterService
     {
-        string ConvertTitel(int index);
-        int ConvertDuur(int index);
-        string ConvertCode(int index);
-        DateTime ExtractStartdatum(int i);
+        string ConvertTitel(int index, string[] processedText);
+        int ConvertDuur(int index, string[] processedText);
+        string ConvertCode(int index, string[] processedText);
+        DateTime ExtractStartdatum(int i, string[] processedText);
 
     }
 }
