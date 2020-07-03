@@ -20,16 +20,6 @@ namespace Course.Models
             _container = container;
         }
 
-        public void Dispose()
-        {
-            Dispose(true);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            _container.Dispose();
-        }
-
         public object GetService(Type serviceType)
         {
             try
@@ -58,6 +48,16 @@ namespace Course.Models
         {
             var child = _container.CreateChildContainer();
             return new UnityResolver(child);
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            _container.Dispose();
         }
     }
 }

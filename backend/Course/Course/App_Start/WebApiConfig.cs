@@ -2,6 +2,7 @@
 using Course.Data.Repository;
 using Course.Models;
 using Course.Services;
+using Course.Services.Interface;
 using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ using System.Net.Http.Headers;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using Unity;
+using Unity.Lifetime;
 
 namespace Course
 {
@@ -19,9 +21,11 @@ namespace Course
         {
             // Web API configuration and services
             var container = new UnityContainer();
-            container.RegisterType<ICursusRepository, CursusRepository>();
-            container.RegisterType<ICursusInstantieRepository, CursusInstantieRepository>();
-            container.RegisterType<ITextFileToObjectConverterService, TextFileToObjectConverterService>();
+            container.RegisterType<ICursusRepository, CursusRepository>(new HierarchicalLifetimeManager());
+            container.RegisterType<ICursusInstantieRepository, CursusInstantieRepository>(new HierarchicalLifetimeManager());
+            container.RegisterType<ITextFileToObjectConverterService, TextFileToObjectConverterService>(new HierarchicalLifetimeManager());
+            container.RegisterType<ITextFileToAttributeConverterService, TextFileToAttributeConverterService>(new HierarchicalLifetimeManager());
+            container.RegisterType<ITextFileValidationService, TextFileValidationService>(new HierarchicalLifetimeManager());
             config.DependencyResolver = new UnityResolver(container);
 
             // Web API routes

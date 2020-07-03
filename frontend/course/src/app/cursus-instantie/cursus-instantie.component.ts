@@ -45,14 +45,15 @@ export class CursusInstantieComponent implements OnInit {
   }
 
   getCurrentWeekNumber(): number {
-    let date = new Date("2020-07-06");
-    let dayNum = date.getUTCDay() || 7;
+    let date = new Date();
+    let utcDate = new Date(Date.UTC(Number(date.getFullYear()), Number(date.getMonth()), Number(date.getDate())));
+    let dayNum = utcDate.getUTCDay() || 7;
 
-    date.setUTCDate(date.getUTCDate() + 4 - dayNum);
+    utcDate.setUTCDate(utcDate.getUTCDate() + 4 - dayNum);
 
-    let yearStart = new Date(Date.UTC(date.getUTCFullYear(),0,1));
+    let yearStart = new Date(Date.UTC(utcDate.getUTCFullYear(),0,1));
 
-    return Math.ceil((((date.getTime() - yearStart.getTime()) / 86400000) + 1)/7);
+    return Math.ceil((((utcDate.getTime() - yearStart.getTime()) / 86400000) + 1)/7);
   };
 
   getCurrentYear(): number {
