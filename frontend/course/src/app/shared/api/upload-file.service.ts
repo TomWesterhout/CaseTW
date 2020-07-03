@@ -12,7 +12,7 @@ export class UploadFileService {
 
   constructor(private http: HttpClient) { }
 
-  upload(formData: FormData): Observable<any> {
+  upload(formData: FormData) {
     return this.http.post(this.UPLOAD_API, formData);
   }
 }

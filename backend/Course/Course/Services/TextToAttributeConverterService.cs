@@ -19,55 +19,43 @@ namespace Course.Services
         }
         public string ConvertTitel(int index)
         {
-            try
+            Match match = Regex.Match(_processedText[index], @"[^:\s]*$");
+            if (match.Success)
             {
-                return _processedText[index].Substring(7);
+                return match.Value;
             }
-            catch (Exception ex)
+            return string.Empty;
+        }
+
+        public string ConvertCode(int index)
+        {
+            Match match = Regex.Match(_processedText[index + 1], @"[^:\s]*$");
+            if (match.Success)
             {
-                Debug.WriteLine(ex);
+                return match.Value;
             }
             return string.Empty;
         }
 
         public int ConvertDuur(int index)
         {
-            try
+            Match match = Regex.Match(_processedText[index + 2], @"[Duur:\s]\d");
+            if (match.Success)
             {
-                string StarOfValue = _processedText[index + 2].Substring(6);
-                return Int32.Parse(Regex.Match(StarOfValue, @"\d+").Value);
+                return Int32.Parse(match.Value);
             }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-            }
+            Debug.WriteLine(string.Format("No number found at line ${0}", index + 2));
             return 0;
         }
 
-        public string ConvertCode(int index)
+        public DateTime ExtractStartdatum(int index)
         {
-            try
+            Match match = Regex.Match(_processedText[index + 3], @"[Startdatum:\s]\d{1,2}\/\d{1,2}\/\d{4}$");
+            if (match.Success)
             {
-                return _processedText[index + 1].Substring(12);
+                return DateTime.Parse(match.Value);
             }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-            }
-            return string.Empty;
-        }
-
-        public DateTime ExtractStartdatum(int i)
-        {
-            try
-            {
-                string startOfValue = _processedText[i + 3].Substring(12);
-                return DateTime.Parse(startOfValue);
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-            }
+            Debug.WriteLine(string.Format("No date found at line ${0}", index + 2));
             return new DateTime();
         }
     }

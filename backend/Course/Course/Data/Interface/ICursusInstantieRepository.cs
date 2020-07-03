@@ -26,6 +26,8 @@ namespace Course.Data.Interface
 
         Task<IEnumerable<CursusInstantie>> GetWhereAsync(Expression<Func<CursusInstantie, bool>> predicate);
 
+        Task<IEnumerable<CursusInstantie>> GetByWeekAndYear(int week, int year);
+
         Task SaveAsync();
 
         void Dispose();

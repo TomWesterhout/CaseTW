@@ -9,9 +9,8 @@ import { UploadFileService } from '../shared/api/upload-file.service';
 export class CursusInstantieAddComponent implements OnInit {
   file: File = null;
   info: String = '';
-  succesResponse: String;
-  duplicateCursusResponse: String;
-  duplicateInstantieResponse: String;
+  successResponse: String;
+  duplicateResponse: String;
 
   constructor(private uploadFileService: UploadFileService) { }
 
@@ -21,18 +20,37 @@ export class CursusInstantieAddComponent implements OnInit {
     if (event.target.files.length > 0) {
       this.file = event.target.files[0];
     }
+    this.clearResponseText();
+  }
+
+  clearResponseText() {
+    this.info = '';
+    this.successResponse = '';
+    this.duplicateResponse = '';
   }
 
   uploadFile() {
     if (this.file === null) {
-      this.info = 'geen bestand geselecteerd';
+      this.info = 'geen bestand geselecteerd.';
+      return;
+    }
+    
+    if (this.file !== null && this.file.type !== 'text/plain') {
+      this.info = 'Bestand is niet in correct formaat.';
       return;
     }
     const formData: FormData = new FormData();
     formData.append('file', this.file, this.file.name);
 
-    this.uploadFileService.upload(formData).subscribe(data => {
-      console.log('success');
+    this.uploadFileService.upload(formData).subscribe(responseData => {
+      if (responseData[0] === 'success') {
+        this.successResponse = responseData[1];
+        this.duplicateResponse = responseData[2];
+      }
+      if (responseData[0] === 'error') {
+        this.info = responseData[1];
+        this.duplicateResponse = responseData[2];
+      }
       }, error => {
         console.log(error);
     });

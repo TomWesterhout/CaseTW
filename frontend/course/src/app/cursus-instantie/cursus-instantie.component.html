@@ -2,6 +2,17 @@
     <mat-card-header>Weekoverzicht</mat-card-header>
     <br>
     <mat-card-content>
+      <div>
+        <button mat-mini-fab color="primary" class="decrease-button" (click)="decreaseCursusWeek()">&lsaquo;</button>
+        <label class="label-cursus-week" for="cursusWeek">week</label>
+        <input matInput name="cursusWeek" type="text" [(ngModel)]="cursusWeek" (ngModelChange)="getCursusInstanties()">
+        
+        <label class="label-cursus-year" for="cursusYear">jaar</label>
+        <input matInput name="cursusYear" type="text" [(ngModel)]="cursusYear" (ngModelChange)="getCursusInstanties()">
+        <button mat-mini-fab color="primary" class="increase-button" (click)="increaseCursusWeek()">&rsaquo;</button>
+      </div>
+    </mat-card-content>
+    <mat-card-content>
         <table mat-table [dataSource]="cursusInstantieCollection" class="mat-elevation-z8">
 
             <ng-container matColumnDef="start">
@@ -24,5 +35,4 @@
         
           </table>
     </mat-card-content>
-</mat-card>  
-  
+</mat-card>

@@ -34,12 +34,19 @@ namespace Course.Controllers
             _textFileToObjectConverterService = new TextFileToObjectConverterService(context);
         }
 
+        //[Route("Index")]
+        //[HttpGet]
+        //public async Task<IEnumerable<CursusInstantie>> GetCursusInstantie()
+        //{
+        //    var cursusInstantieData = await _cursusInstantieRepository.GetAllAsync();
+        //    return cursusInstantieData.OrderBy(ci => ci.StartDatum);
+        //}
+
         [Route("Index")]
         [HttpGet]
-        public async Task<IEnumerable<CursusInstantie>> GetCursusInstantie()
+        public async Task<IEnumerable<CursusInstantie>> GetCursusInstantieByWeek(int cursusweek, int cursusyear)
         {
-            var cursusInstantieData = await _cursusInstantieRepository.GetAllAsync();
-            return cursusInstantieData.OrderBy(ci => ci.StartDatum);
+            return await _cursusInstantieRepository.GetByWeekAndYear(cursusweek, cursusyear);
         }
 
         [Route("Upload")]

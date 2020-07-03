@@ -18,6 +18,7 @@ namespace Course.Services
         private ICursusInstantieRepository _cursusInstantieRepository;
         private ICursusRepository _cursusRepository;
         private ITextFileToAttributeConverterService _textFileToAttributeConverterService;
+        private ITextFileValidationService _textFileValidationService;
         private int cursusCount;
         private int cursusInstantieCount;
         private int duplicateCount;
@@ -37,6 +38,13 @@ namespace Course.Services
             }
 
             string[] processedText = ProcessText(unprocessedText);
+
+            _textFileValidationService = new TextFileValidationService();
+            var validationResponse = _textFileValidationService.ValidateTextFile(processedText);
+            if (validationResponse[0] != "Valid")
+            {
+                return validationResponse;
+            }
             _textFileToAttributeConverterService = new TextFileToAttributeConverterService(processedText);
 
             ResetCounters();
@@ -61,14 +69,15 @@ namespace Course.Services
 
         private string[] ProcessText(string unprocessedText)
         {
-            return unprocessedText.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            //return unprocessedText.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            return unprocessedText.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
         }
 
         private async Task<List<Cursus>> ExtractCursusObjectsFromProcessedText(string[] processedText)
         {
             var cursusObjecten = new List<Cursus>();
 
-            for (int i = 0; i < processedText.Length; i += 4)
+            for (int i = 0; i < processedText.Length; i += 5)
             {
                 Cursus cursusObject = InstantiateCursusObject(i, processedText);
 
@@ -108,7 +117,7 @@ namespace Course.Services
         {
             var cursusInstantieObjecten = new List<CursusInstantie>();
 
-            for (int i = 0; i < processedText.Length; i += 4)
+            for (int i = 0; i < processedText.Length; i += 5)
             {
                 CursusInstantie cursusInstantieObject = await InstantiateCursusInstantieObject(i, processedText);
 
@@ -147,6 +156,7 @@ namespace Course.Services
         public List<string> CreateResponseMessages()
         {
             List<string> responseMessage = new List<string>();
+            responseMessage.Add("success");
             responseMessage.Add(string.Format(TextFileConverterResponseText.baseText, cursusCount, cursusInstantieCount));
             responseMessage.Add(duplicateCount > 0 ? string.Format(TextFileConverterResponseText.duplicateText, duplicateCount) : "");
 

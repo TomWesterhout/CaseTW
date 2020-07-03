@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/'
 import { CursusInstantie } from '../models/cursus-instantie';
 import { API } from '../constants/url.constants';
+import { Cursus } from '../models/cursus';
 
 @Injectable({
   providedIn: 'root'
@@ -14,24 +15,10 @@ export class CursusInstantieService {
   constructor(private http: HttpClient) { }
 
   getAll(): Observable<Array<CursusInstantie>> {
-    return this.http.get<Array<CursusInstantie>>(this.CURSUSINSTANTIE_API);
+    return this.http.get<Array<CursusInstantie>>(`${this.CURSUSINSTANTIE_API}`);
   }
 
-  get(id: string) {
-    return this.http.get(`${this.CURSUSINSTANTIE_API}/${id}`);
-  }
-
-  save(cursus: CursusInstantie): Observable<CursusInstantie> {
-    let result: Observable<CursusInstantie>;
-
-    if (cursus.id) {
-      result = this.http.put<CursusInstantie>(`${this.CURSUSINSTANTIE_API}/${cursus.id}`, cursus);
-    }
-
-    return result;
-  }
-
-  delete(id: number) {
-    return this.http.delete(`${this.CURSUSINSTANTIE_API}/${id.toString}`);
+  getByWeekAndYear(cursusWeek: Number, cursusYear: Number) {
+    return this.http.get<Array<CursusInstantie>>(`${this.CURSUSINSTANTIE_API}?cursusweek=${cursusWeek}&cursusyear=${cursusYear}`)
   }
 }

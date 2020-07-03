@@ -62,6 +62,12 @@ namespace Course.Data.Repository
             return await db.CursusInstantie.Where(predicate).ToListAsync();
         }
 
+        public async Task<IEnumerable<CursusInstantie>> GetByWeekAndYear(int cursusWeek, int cursusYear)
+        {
+            List<CursusInstantie> listresult = await db.CursusInstantie.Include(ci => ci.Cursus).ToListAsync();
+            return listresult.Where(ci => ci.StartDatum.GetIso8601WeekOfYear() == cursusWeek && ci.StartDatum.Year == cursusYear).OrderBy(ci => ci.StartDatum);
+        }
+
         public async Task SaveAsync()
         {
             await db.SaveChangesAsync();

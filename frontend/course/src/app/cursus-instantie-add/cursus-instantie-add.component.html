@@ -1,9 +1,22 @@
-<mat-card style="margin-top:10px; width: 50%;">
+<mat-card>
+  <mat-card-header>Cursus toevoegen</mat-card-header>
+  <br>
   <mat-card-content>  
     <div class="form">
       <label for="file">Bestand: </label>
       <input type="file" id="text-file" (change)="onFileChange($event)">
     </div>
-    <button (click)="uploadFile()">Invoeren</button>
+    <br>
+    <button mat-raised-button color="primary" (click)="uploadFile()">Invoeren</button>
+    <br>
+    <div class="error-response">
+      <p>{{info}}</p>
+    </div>
+    <div class="success-response">
+      <p>{{successResponse}}</p>
+    </div>
+    <div class="error-response">
+      <p>{{duplicateResponse}}</p>
+    </div>
   </mat-card-content>
 </mat-card>
