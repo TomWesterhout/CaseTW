@@ -3,14 +3,14 @@
 <h3>Benodigdheden</h3>
 <p>Het uitvoeren van zowel de ASP.NET Web API (backend) applicatie als de Angular (frontend) applicatie vereist dat de gebruiker een systeem met Windows OS heeft met daarop de onderstaande software geïnstalleerd.</p>
 
-<a src="https://visualstudio.microsoft.com/downloads/">Visual Studio 2019</a>
-<a src="https://nodejs.org/en/download/">Node.js</a>
-<a src="https://cli.angular.io/">Angular CLI</a>
+<p><a src="https://visualstudio.microsoft.com/downloads/">Visual Studio 2019</a></p>
+<p><a src="https://nodejs.org/en/download/">Node.js</a></p>
+<p><a src="https://cli.angular.io/">Angular CLI</a></p>
 
 <h3>Clone</h3>
 <p>Clone de link van het project door op de hoofdpagina op de knop 'Code' en vervolgens op het 'clipboard' icoon te klikken.</p>
 <p>Via de terminal kan het project worden gecloned door het volgende command uit te voeren:</p>
-<p>$ git clone {de zojuist gekopieerde link}</p>
+<p>'$ git clone {de zojuist gekopieerde link}'</p>
 
 <h3>Backend</h3>
 <p>Voor het uitvoeren van de ASP.NET Web API applicatie open je de solution file met Visual Studio 2019: 'CaseTW/backend/Course/Course.sln'.</p>
