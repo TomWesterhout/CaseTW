@@ -46,7 +46,8 @@ export class CursusInstantieComponent implements OnInit {
   getCursusInstanties() {
     this.cursusInstantieService.getByWeekAndYear(this.cursusWeek, this.cursusYear).subscribe(cursusInstantieData => {
       this.cursusInstantieCollection = cursusInstantieData;
-    })
+    });
+    this.router.navigate(['/cursusinstantie-overzicht', this.cursusWeek, this.cursusYear]);
   }
 
   increaseCursusWeek() {
