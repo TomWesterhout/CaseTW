@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CursusInstantieService } from '../shared/api/cursus-instantie.service';
 import { CursusInstantie } from '../shared/models/cursus-instantie';
-import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { switchMap } from 'rxjs/operators';
+import { DateService } from '../shared/api/date.service';
 
 @Component({
   selector: 'app-cursus-instantie',
@@ -17,7 +16,8 @@ export class CursusInstantieComponent implements OnInit {
   cursusYear: number = 2020;
 
   constructor(
-    private cursusInstantieService: CursusInstantieService, 
+    private cursusInstantieService: CursusInstantieService,
+    private dateService: DateService,
     private route: ActivatedRoute,
     private router: Router) { }
 
@@ -26,9 +26,9 @@ export class CursusInstantieComponent implements OnInit {
       let cursusWeek = +params.get('cursusweek');
       let cursusYear = +params.get('cursusyear');
 
-      if (cursusWeek === 0 || cursusYear === 0) {
-        this.cursusWeek = this.getCurrentWeekNumber();
-        this.cursusYear = this.getCurrentYear();
+      if (cursusWeek !== null && cursusWeek === 0 || cursusYear !== null && cursusYear === 0) {
+        this.cursusWeek = this.dateService.getCurrentWeekNumber();
+        this.cursusYear = this.dateService.getCurrentYear();
       }
 
       if (cursusWeek !== null && cursusWeek > 0) {
@@ -40,36 +40,8 @@ export class CursusInstantieComponent implements OnInit {
       }
 
       this.getCursusInstanties();
-      console.log(this.getCurrentWeekNumber());
     });
   }
-
-  getCurrentWeekNumber(): number {
-    let date = new Date();
-    let utcDate = new Date(Date.UTC(Number(date.getFullYear()), Number(date.getMonth()), Number(date.getDate())));
-    let dayNum = utcDate.getUTCDay() || 7;
-
-    utcDate.setUTCDate(utcDate.getUTCDate() + 4 - dayNum);
-
-    let yearStart = new Date(Date.UTC(utcDate.getUTCFullYear(),0,1));
-
-    return Math.ceil((((utcDate.getTime() - yearStart.getTime()) / 86400000) + 1)/7);
-  };
-
-  getCurrentYear(): number {
-    let date = new Date().getFullYear();
-    console.log(date);
-    return date;
-  }
-
-  getWeeksInYear(year) {
-    let day = new Date(year, 0, 1);
-    let isLeapYear = new Date(year, 1, 29).getMonth() === 1;
-
-    // 53 weeks: In case January 1st falls on a Thursday or if the year is a leapyear and January 1st falls on a wednesday then. 
-    // 52 weeks: all other scenarios.
-    return day.getDay() === 4 || isLeapYear && day.getDay() === 3 ? 53 : 52
-}
 
   getCursusInstanties() {
     this.cursusInstantieService.getByWeekAndYear(this.cursusWeek, this.cursusYear).subscribe(cursusInstantieData => {
@@ -78,7 +50,7 @@ export class CursusInstantieComponent implements OnInit {
   }
 
   increaseCursusWeek() {
-    let weeksInCurrentYear = this.getWeeksInYear(this.cursusYear);
+    let weeksInCurrentYear = this.dateService.getWeeksInYear(this.cursusYear);
     if (this.cursusWeek + 1 > weeksInCurrentYear) {
       this.cursusWeek = 1;
       this.cursusYear++
@@ -92,7 +64,7 @@ export class CursusInstantieComponent implements OnInit {
   }
 
   decreaseCursusWeek() {
-    let weeksInPreviousYear = this.getWeeksInYear(this.cursusYear - 1);
+    let weeksInPreviousYear = this.dateService.getWeeksInYear(this.cursusYear - 1);
     if (this.cursusWeek - 1 < 1) {
       this.cursusWeek = weeksInPreviousYear;
       this.cursusYear--;
