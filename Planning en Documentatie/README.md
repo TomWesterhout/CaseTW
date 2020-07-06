@@ -34,4 +34,6 @@
 <p>Nadat het derde commando is uitgevoerd zal na enkele seconden een browser zich openen en navigeren naar 'http://localhost:4200/'. De applicatie navigeert automatisch naar het cursusinstantie-overzicht van de huidige week. CursusInstanties en Cursussen kunnen worden toegevoegd middels de overzicht pagina, te benaderen via de 'Overzicht' knop in de navigatiebar.</p>
 
 <h3>Tests</h3>
-<p>Voor het uitvoeren van de tests kan er vanuit Visual Studio 2019 met de rechtermuisknop op 'Course.Tests' worden geklikt en vervolgens op 'Run Tests'.</p>
+<p>Voor het uitvoeren van de backend tests kan er vanuit Visual Studio 2019 met de rechtermuisknop op 'Course.Tests' worden geklikt en vervolgens op 'Run Tests'.</p>
+<p>Voor het uitvoeren van de front end tests navigeer je via de terminal naar 'CaseTW/frontend/course' en voer je het volgende command uit:</p>
+<p>'$ ng test'</p>
