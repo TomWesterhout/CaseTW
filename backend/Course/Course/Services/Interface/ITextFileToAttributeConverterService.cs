@@ -11,7 +11,7 @@ namespace Course.Services.Interface
         string ConvertTitel(int index, string[] processedText);
         int ConvertDuur(int index, string[] processedText);
         string ConvertCode(int index, string[] processedText);
-        DateTime ExtractStartdatum(int i, string[] processedText);
+        DateTime ConvertStartdatum(int i, string[] processedText);
 
     }
 }

@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Http.Dependencies;
 using Unity;
 
-namespace Course.Models
+namespace Course.Configuration
 {
     public class UnityResolver : IDependencyResolver
     {

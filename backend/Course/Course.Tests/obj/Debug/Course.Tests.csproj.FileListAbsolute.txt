@@ -55,3 +55,9 @@ C:\Users\Tom\Documents\Development\CaseTW\CaseTW\backend\Course\Course.Tests\obj
 C:\Users\Tom\Documents\Development\CaseTW\CaseTW\backend\Course\Course.Tests\obj\Debug\Course.Tests.csproj.CopyComplete
 C:\Users\Tom\Documents\Development\CaseTW\CaseTW\backend\Course\Course.Tests\obj\Debug\Course.Tests.dll
 C:\Users\Tom\Documents\Development\CaseTW\CaseTW\backend\Course\Course.Tests\obj\Debug\Course.Tests.pdb
+C:\Users\Tom\Documents\Development\CaseTW\CaseTW\backend\Course\Course.Tests\bin\Debug\AutoMapper.dll
+C:\Users\Tom\Documents\Development\CaseTW\CaseTW\backend\Course\Course.Tests\bin\Debug\Castle.Core.dll
+C:\Users\Tom\Documents\Development\CaseTW\CaseTW\backend\Course\Course.Tests\bin\Debug\Moq.dll
+C:\Users\Tom\Documents\Development\CaseTW\CaseTW\backend\Course\Course.Tests\bin\Debug\AutoMapper.xml
+C:\Users\Tom\Documents\Development\CaseTW\CaseTW\backend\Course\Course.Tests\bin\Debug\Castle.Core.xml
+C:\Users\Tom\Documents\Development\CaseTW\CaseTW\backend\Course\Course.Tests\bin\Debug\Moq.xml

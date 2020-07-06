@@ -22,10 +22,6 @@ import { CursusInstantieAddComponent } from './cursus-instantie-add/cursus-insta
 import { CursusInstantieService } from './shared/api/cursus-instantie.service';
 import { CursusService } from './shared/api/cursus.service';
 
-const cursusWeek: number = 28; // gebaseerd op de week waarin de opdracht wordt beoordeeld.
-const cursusYear: number = 2020;
-const examinationDateUrl: string = `cursusinstantie-overzicht/${cursusWeek}/${cursusYear}`;
-
 const appRoutes: Routes = [
   { 
     path: '', 

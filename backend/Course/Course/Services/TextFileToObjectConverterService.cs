@@ -22,6 +22,7 @@ namespace Course.Services
         private int cursusCount;
         private int cursusInstantieCount;
         private int duplicateCount;
+        public string[] _processedText;
 
         public TextFileToObjectConverterService(
             ICursusInstantieRepository cursusInstantieRepository,
@@ -45,13 +46,11 @@ namespace Course.Services
 
             string[] processedText = ProcessText(unprocessedText);
 
-            //_textFileValidationService = new TextFileValidationService();
             var validationResponse = _textFileValidationService.ValidateTextFile(processedText);
             if (validationResponse[0] != "Valid")
             {
                 return validationResponse;
             }
-            //_textFileToAttributeConverterService = new TextFileToAttributeConverterService(processedText);
 
             ResetCounters();
 
@@ -75,7 +74,6 @@ namespace Course.Services
 
         private string[] ProcessText(string unprocessedText)
         {
-            //return unprocessedText.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
             return unprocessedText.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
         }
 
@@ -147,16 +145,15 @@ namespace Course.Services
 
             return new CursusInstantie
             {
-                StartDatum = _textFileToAttributeConverterService.ExtractStartdatum(index, processedText),
-                CursusId = cursus.Id,
-                Cursus = cursus
+                StartDatum = _textFileToAttributeConverterService.ConvertStartdatum(index, processedText),
+                CursusId = cursus.Id
             };
         }
 
         private async Task<bool> IsDuplicate(List<CursusInstantie> cursusInstantieObjecten, CursusInstantie cursusInstantieObject)
         {
-            var databaseCursusInstantieObjects = await _cursusInstantieRepository.GetWhereAsync(ci => ci.StartDatum == cursusInstantieObject.StartDatum && ci.Cursus.Code == cursusInstantieObject.Cursus.Code);
-            return cursusInstantieObjecten.Any(cio => cio.StartDatum == cursusInstantieObject.StartDatum && cio.Cursus.Code == cursusInstantieObject.Cursus.Code) || (databaseCursusInstantieObjects.Count() > 0);
+            var databaseCursusInstantieObjects = await _cursusInstantieRepository.GetWhereAsync(ci => ci.StartDatum == cursusInstantieObject.StartDatum && ci.CursusId == cursusInstantieObject.CursusId);
+            return cursusInstantieObjecten.Any(cio => cio.StartDatum == cursusInstantieObject.StartDatum && cio.CursusId == cursusInstantieObject.CursusId) || (databaseCursusInstantieObjects.Count() > 0);
         }
 
         public List<string> CreateResponseMessages()

@@ -186,8 +186,6 @@ C:\Users\Tom\Documents\Development\CaseTW\CaseTW\backend\Course\Course\bin\Unity
 C:\Users\Tom\Documents\Development\CaseTW\CaseTW\backend\Course\Course\bin\Antlr3.Runtime.pdb
 C:\Users\Tom\Documents\Development\CaseTW\CaseTW\backend\Course\Course\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
 C:\Users\Tom\Documents\Development\CaseTW\CaseTW\backend\Course\Course\obj\Debug\Course.csprojAssemblyReference.cache
-C:\Users\Tom\Documents\Development\CaseTW\CaseTW\backend\Course\Course\obj\Debug\Course.Migrations.Initial.resources
-C:\Users\Tom\Documents\Development\CaseTW\CaseTW\backend\Course\Course\obj\Debug\Course.csproj.GenerateResource.cache
 C:\Users\Tom\Documents\Development\CaseTW\CaseTW\backend\Course\Course\obj\Debug\Course.csproj.CoreCompileInputs.cache
 C:\Users\Tom\Documents\Development\CaseTW\CaseTW\backend\Course\Course\obj\Debug\Course.csproj.CopyComplete
 C:\Users\Tom\Documents\Development\CaseTW\CaseTW\backend\Course\Course\obj\Debug\Course.dll
@@ -198,3 +196,7 @@ C:\Users\Tom\Documents\Development\CaseTW\CaseTW\backend\Course\Course\bin\Syste
 C:\Users\Tom\Documents\Development\CaseTW\CaseTW\backend\Course\Course\bin\Castle.Core.xml
 C:\Users\Tom\Documents\Development\CaseTW\CaseTW\backend\Course\Course\bin\Moq.xml
 C:\Users\Tom\Documents\Development\CaseTW\CaseTW\backend\Course\Course\bin\System.Threading.Tasks.Extensions.xml
+C:\Users\Tom\Documents\Development\CaseTW\CaseTW\backend\Course\Course\bin\AutoMapper.dll
+C:\Users\Tom\Documents\Development\CaseTW\CaseTW\backend\Course\Course\bin\AutoMapper.xml
+C:\Users\Tom\Documents\Development\CaseTW\CaseTW\backend\Course\Course\obj\Debug\Course.Migrations.Initial.resources
+C:\Users\Tom\Documents\Development\CaseTW\CaseTW\backend\Course\Course\obj\Debug\Course.csproj.GenerateResource.cache

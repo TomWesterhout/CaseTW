@@ -11,11 +11,13 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
 using System.Web.Http.Results;
+using AutoMapper;
 using Course.Data;
 using Course.Data.Interface;
 using Course.Data.Repository;
 using Course.Models;
 using Course.Services;
+using Course.ViewModels;
 using Newtonsoft.Json;
 
 namespace Course.Controllers
@@ -25,18 +27,24 @@ namespace Course.Controllers
     {
         private ICursusInstantieRepository _cursusInstantieRepository;
         private ITextFileToObjectConverterService _textFileToObjectConverterService;
+        private IMapper _mapper;
 
-        public CursusInstantieController(ICursusInstantieRepository cursusInstantieRepository, ITextFileToObjectConverterService textFileToObjectConverterService)
+        public CursusInstantieController(
+            ICursusInstantieRepository cursusInstantieRepository, 
+            ITextFileToObjectConverterService textFileToObjectConverterService,
+            IMapper mapper)
         {
             _cursusInstantieRepository = cursusInstantieRepository;
             _textFileToObjectConverterService = textFileToObjectConverterService;
+            _mapper = mapper;
         }
 
         [Route("Index")]
         [HttpGet]
-        public async Task<IEnumerable<CursusInstantie>> GetCursusInstantieByWeek(int cursusweek, int cursusyear)
+        public async Task<IEnumerable<CursusInstantieViewModel>> GetCursusInstantieByWeek(int cursusweek, int cursusyear)
         {
-            return await _cursusInstantieRepository.GetByWeekAndYear(cursusweek, cursusyear);
+            IEnumerable<CursusInstantie> queryResult = await _cursusInstantieRepository.GetByWeekAndYear(cursusweek, cursusyear);
+            return _mapper.Map<IEnumerable<CursusInstantie>, IEnumerable<CursusInstantieViewModel>>(queryResult);
         }
 
         [Route("Upload")]

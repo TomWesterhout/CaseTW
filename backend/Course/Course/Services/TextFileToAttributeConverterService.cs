@@ -11,29 +11,25 @@ namespace Course.Services
 {
     public class TextFileToAttributeConverterService : ITextFileToAttributeConverterService
     {
-        private string[] _processedText;
-
-        public TextFileToAttributeConverterService(string[] processedText)
-        {
-            _processedText = processedText;
-        }
         public string ConvertTitel(int index, string[] processedText)
         {
-            Match match = Regex.Match(processedText[index], @"[^:\s]*$");
-            if (match.Success)
+            Match match = Regex.Match(processedText[index], @":\s(.*)");
+            if (match.Success && match.Groups.Count == 2)
             {
-                return match.Value;
+                return match.Groups[1].ToString();
             }
+            Debug.WriteLine(string.Format("No Titel found at line ${0}", index));
             return string.Empty;
         }
 
         public string ConvertCode(int index, string[] processedText)
         {
-            Match match = Regex.Match(processedText[index + 1], @"[^:\s]*$");
-            if (match.Success)
+            Match match = Regex.Match(processedText[index + 1], @":\s(.*)");
+            if (match.Success && match.Groups.Count == 2)
             {
-                return match.Value;
+                return match.Groups[1].ToString();
             }
+            Debug.WriteLine(string.Format("No Code found at line ${0}", index + 1));
             return string.Empty;
         }
 
@@ -48,14 +44,14 @@ namespace Course.Services
             return 0;
         }
 
-        public DateTime ExtractStartdatum(int index, string[] processedText)
+        public DateTime ConvertStartdatum(int index, string[] processedText)
         {
             Match match = Regex.Match(processedText[index + 3], @"[Startdatum:\s]\d{1,2}\/\d{1,2}\/\d{4}$");
             if (match.Success)
             {
                 return DateTime.Parse(match.Value);
             }
-            Debug.WriteLine(string.Format("No date found at line ${0}", index + 2));
+            Debug.WriteLine(string.Format("No date found at line ${0}", index + 3));
             return new DateTime();
         }
     }

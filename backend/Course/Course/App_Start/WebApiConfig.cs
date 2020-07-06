@@ -1,12 +1,10 @@
-﻿using Course.Data.Interface;
+﻿using AutoMapper;
+using Course.Configuration;
+using Course.Data.Interface;
 using Course.Data.Repository;
-using Course.Models;
 using Course.Services;
 using Course.Services.Interface;
 using Newtonsoft.Json.Serialization;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http.Headers;
 using System.Web.Http;
 using System.Web.Http.Cors;
@@ -20,12 +18,20 @@ namespace Course
         public static void Register(HttpConfiguration config)
         {
             // Web API configuration and services
-            var container = new UnityContainer();
+            UnityContainer container = new UnityContainer();
             container.RegisterType<ICursusRepository, CursusRepository>(new HierarchicalLifetimeManager());
             container.RegisterType<ICursusInstantieRepository, CursusInstantieRepository>(new HierarchicalLifetimeManager());
             container.RegisterType<ITextFileToObjectConverterService, TextFileToObjectConverterService>(new HierarchicalLifetimeManager());
             container.RegisterType<ITextFileToAttributeConverterService, TextFileToAttributeConverterService>(new HierarchicalLifetimeManager());
             container.RegisterType<ITextFileValidationService, TextFileValidationService>(new HierarchicalLifetimeManager());
+            // Automapper configuration and registration
+            var mapperConfiguration = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<AutoMapperProfile>();
+
+            });
+            container.RegisterInstance<IMapper>(mapperConfiguration.CreateMapper());
+
             config.DependencyResolver = new UnityResolver(container);
 
             // Web API routes

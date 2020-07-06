@@ -9,7 +9,7 @@ namespace Course.Services
 {
     public class TextFileValidationService : ITextFileValidationService
     {
-        private List<string> validationResponse = new List<string>();
+        private List<string> _validationResponse = new List<string>();
         public List<string> ValidateTextFile(string[] textFile)
         {
             for (int lineIndex = 0; lineIndex < textFile.Length; lineIndex++)
@@ -20,35 +20,35 @@ namespace Course.Services
                         if (!IsTitleValid(textFile[lineIndex]))
                         {
                             InvalidResponse(lineIndex);
-                            return validationResponse;
+                            return _validationResponse;
                         }
                         break;
                     case 1:
                         if (!IsCursusCodeValid(textFile[lineIndex]))
                         {
                             InvalidResponse(lineIndex);
-                            return validationResponse;
+                            return _validationResponse;
                         }
                         break;
                     case 2:
                         if (!IsDuurValid(textFile[lineIndex]))
                         {
                             InvalidResponse(lineIndex);
-                            return validationResponse;
+                            return _validationResponse;
                         }
                         break;
                     case 3:
                         if (!IsStartDatumValid(textFile[lineIndex]))
                         {
                             InvalidResponse(lineIndex);
-                            return validationResponse;
+                            return _validationResponse;
                         }
                         break;
                     case 4:
                         if (!string.IsNullOrEmpty(textFile[lineIndex]))
                         {
                             InvalidResponse(lineIndex);
-                            return validationResponse;
+                            return _validationResponse;
                         }
                         break;
                     default:
@@ -56,7 +56,7 @@ namespace Course.Services
                 }
             }
             ValidResponse();
-            return validationResponse;
+            return _validationResponse;
         }
 
         // Validation Methods
@@ -88,14 +88,14 @@ namespace Course.Services
 
         private void InvalidResponse(int lineIndex)
         {
-            validationResponse.Add("error");
-            validationResponse.Add(string.Format("Bestand is niet in correct formaat op regel {0}.", lineIndex + 1));
-            validationResponse.Add("Er zijn geen cursusinstanties toegevoegd.");
+            _validationResponse.Add("error");
+            _validationResponse.Add(string.Format("Bestand is niet in correct formaat op regel {0}.", lineIndex + 1));
+            _validationResponse.Add("Er zijn geen cursusinstanties toegevoegd.");
         }
 
         private void ValidResponse()
         {
-            validationResponse.Add("Valid");
+            _validationResponse.Add("Valid");
         }
     }
 }
